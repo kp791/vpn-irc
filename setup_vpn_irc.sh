@@ -283,7 +283,7 @@ create_irssi_container() {
         -v "${IRSSI_CONFIG_DIR}:/home/${IRC_USER}/.irssi:z" \
         docker.io/alpine:latest \
         sh -c "adduser -D -u ${IRC_UID} -h /home/${IRC_USER} ${IRC_USER} && \
-               apk add --no-cache irssi curl nano && \
+               apk add --no-cache irssi curl nano tzdata && \
                su - ${IRC_USER} -c 'tail -f /dev/null'"
     
     echo -e "${GREEN}✓ Irssi container created with user '${IRC_USER}' (UID: ${IRC_UID})${NC}"
@@ -370,6 +370,10 @@ display_summary() {
     echo
     echo "Connect to Irssi:"
     echo "  sudo podman exec -it -u ${IRC_USER} irssi-client irssi"
+    echo
+    echo "Set your timezone inside container"
+    echo "  ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime"
+    echo "  echo \"Europe/London\" > /etc/timezone"
     echo
     echo "Edit config from host:"
     echo "  nano ${IRSSI_CONFIG_DIR}/config"
